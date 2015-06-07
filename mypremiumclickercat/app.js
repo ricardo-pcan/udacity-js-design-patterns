@@ -47,7 +47,25 @@ $(function()
       {
         model.current_cat.clicks += 1;
         catView.renderCat();
-      }
+      },
+      updateFields: function()
+      {
+        var clicks = catView.input_clicks.val();
+        console.log(clicks);
+        var url = catView.input_url.val();
+        var name = catView.input_name.val();
+        var cat = model.current_cat;
+        cat.name = name;
+        cat.clicks = clicks;
+        cat.img = url;
+      },
+      renderData: function()
+      {
+        var cat = model.current_cat;
+        catView.input_clicks.val(cat.clicks);
+        catView.input_url.val(cat.img);
+        catView.input_name.val(cat.name);
+      },
 
     };
     var catView = {
@@ -57,10 +75,21 @@ $(function()
         this.cat_name = $('.cat-Name');
         this.cat_clicks = $('.cat-Clicks');
         this.cat_image = $('.cat-Image');
-        this.cat_list = $('#cat-List');        
+        this.cat_list = $('#cat-List');
+        this.admin_panel = $(".admin-Section");
+        this.admin_panel.hide();
+        this.admin_button = $("#admin-Button");
+        this.input_name = $("#input-Name");
+        this.input_url = $("#input-URL");
+        this.input_clicks = $("#input-Clicks");
+        this.cancel_button = $("#cancel-Button");
+        this.commit_button = $("#commit-Button");
         this.createList();
         this.renderCat();
         this.clickImage();
+        this.clickAdminButton();
+        this.clickCancelButton();
+        this.clickCommitButton();
       },
       renderCat: function()
       {
@@ -96,6 +125,37 @@ $(function()
           })(cat));
 
         }
+      },
+      clickAdminButton: function()
+      {
+        var _self = this;
+        _self.admin_button.on('click', function()
+        {
+          _self.admin_panel.toggle();
+          octopus.renderData();
+        });
+      },
+      clickCancelButton: function()
+      {
+        var _self = this;
+        _self.cancel_button.on('click', function(){
+          console.log("hola");
+          _self.admin_panel.hide();
+        });
+      },
+      clickCommitButton: function()
+      {
+        var _self = this;
+        _self.commit_button.on('click', function()
+        {
+          octopus.updateFields();
+        });
+      },
+      cleanFields: function()
+      {
+        this.input_name.val("");
+        this.input_url.val("");
+        this.input_clicks.val("");
       }
 
     };
